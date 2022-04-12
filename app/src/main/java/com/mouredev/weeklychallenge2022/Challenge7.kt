@@ -1,5 +1,8 @@
 package com.mouredev.weeklychallenge2022
 
+import java.text.Normalizer
+import java.util.regex.Pattern
+
 /*
  * Reto #7
  * CONTANDO PALABRAS
@@ -19,3 +22,30 @@ package com.mouredev.weeklychallenge2022
  * - Subiré una posible solución al ejercicio el lunes siguiente al de su publicación.
  *
  */
+
+fun main (){
+    contadorPalabras("el gato al rato, el rato a la cuerda, la cuerda al palo, daba el arriero a Sancho, Sancho a la moza, la moza a él, el ventero a la moza")
+}
+
+
+fun contadorPalabras(frase: String){
+    var patronLimpia = "[^a-zA-Z0-9_\\s]".toRegex()
+    var normalizer = Normalizer.normalize(frase, Normalizer.Form.NFD)
+    var accentremoved = normalizer.replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
+    var fraseModificada = accentremoved.replace(patronLimpia, "")
+    var newStr:List<String> = fraseModificada.split("\\s+".toRegex())
+    var howManyCounts = 0
+    var hasheitoWuapoSae:HashMap<String, Int> = HashMap()
+    
+    newStr.forEach { primer ->
+        newStr.forEach { segundo ->
+            if(primer == segundo){
+                howManyCounts++
+            }
+            hasheitoWuapoSae.put(primer,howManyCounts)
+        }
+        howManyCounts = 0
+    }
+    print(hasheitoWuapoSae)
+
+}
